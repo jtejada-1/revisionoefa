@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Análisis de Hallazgos OEFA</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Estilos generales del cuerpo y contenedor principal */
+        body { margin: 0; padding: 0; font-family: sans-serif; height: 100vh; overflow: hidden; }
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr; /* Columna izquierda para resumen (más ancha), columna derecha (PDF) */
+            height: 100%;
+        }
+        /* Panel Izquierdo para el resumen */
+        .summary-panel {
+            overflow-y: auto;
+            padding: 1.5rem; /* p-6 */
+            background-color: #f9fafb; /* bg-gray-50 */
+            border-right: 1px solid #e5e7eb;
+        }
+        /* Contenedor del visor de PDF (panel derecho) */
+        .pdf-viewer-container {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            background-color: #fff;
+        }
+        /* Contenedor de las pestañas */
+        .tabs-container {
+            display: flex;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 0 1rem;
+            background-color: #f1f5f9; /* slate-100 */
+        }
+        .tab-button {
+            padding: 0.75rem 1.25rem;
+            cursor: pointer;
+            font-weight: 600;
+            color: #4b5563; /* gray-600 */
+            border: none;
+            border-bottom: 3px solid transparent;
+            transition: all 0.2s ease-in-out;
+            background-color: transparent;
+            text-align: center;
+            white-space: nowrap; /* Evita que el texto de la pestaña se rompa */
+        }
+        .tab-button:hover {
+            color: #2563eb; /* blue-600 */
+            background-color: #e2e8f0; /* slate-200 */
+        }
+        .tab-button.active {
+            color: #2563eb; /* blue-600 */
+            border-bottom-color: #2563eb; /* blue-600 */
+            background-color: #fff;
+        }
+        /* Contenedor individual de cada iframe de PDF para controlar su visibilidad */
+        .pdf-iframe-wrapper {
+            flex-grow: 1;
+            width: 100%;
+            height: 100%; /* Asegura que el contenedor ocupe el espacio */
+            display: none; /* Por defecto, todos ocultos */
+        }
+        .pdf-iframe-wrapper.active {
+            display: block; /* Muestra el iframe activo */
+        }
+        /* Iframe para el PDF */
+        .pdf-iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        /* Estilo para los enlaces de página */
+        .page-link {
+            text-decoration: underline;
+            cursor: pointer;
+            color: #2563eb; /* blue-600 */
+            font-weight: 600;
+        }
+        .page-link:hover {
+            color: #1d4ed8; /* blue-700 */
+        }
+        /* Estilo para resaltar los compromisos incumplidos */
+        .incumplimiento-highlight {
+            color: #dc2626; /* red-600 */
+            font-weight: 600;
+            background-color: #fee2e2; /* red-100 */
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            display: inline-block; /* Para que el padding y background se apliquen correctamente */
+            margin-top: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-grid">
+        <div class="summary-panel">
+            <h1 class="text-2xl font-bold mb-4 text-gray-800">Resumen de Hallazgos de OEFA</h1>
+
+            <div class="mb-8">
+                <h2 class="text-xl font-semibold mb-3 text-gray-700">Hecho Analizado N.º 2: Programa de Monitoreo Socioambiental Participativo</h2>
+                <h3 class="text-lg font-medium mb-2 text-gray-600">Compromisos evaluados</h3>
+                <ul class="list-disc list-inside text-gray-700 space-y-1">
+                    <li>a) Información de los posibles impactos ambientales del proyecto y las medidas de manejo;</li>
+                    <li>b) Capacitar a los Comités Locales de monitoreo ambiental participativo.</li>
+                    <li>c) Conformar los Comités Locales de monitoreo ambiental participativo.</li>
+                    <li>d) Recoger de expectativas, temores y dudas sobre temas ambientales de la población y de los grupos de interés;</li>
+                    <li>e) Identificar actividades a ser trabajadas de manera participativa con actores locales</li>
+                    <li>f) Programar las actividades de los Comités Locales de monitoreo ambiental participativo.</li>
+                    <li>g) Difundir los resultados de los monitoreos ambientales a las poblaciones locales.</li>
+                </ul>
+                <h3 class="text-lg font-medium mt-4 mb-2 text-red-600">Compromisos incumplidos:</h3>
+                <p class="incumplimiento-highlight">Según OEFA el ítem "g)" se ha incumplido para el ámbito de Morococha.</p>
+                <h3 class="text-lg font-medium mt-4 mb-2 text-gray-600">Análisis de OEFA</h3>
+                <ul class="list-disc list-inside text-gray-700 space-y-1">
+                    <li>Análisis del ítem g) en la <span class="page-link" data-hecho-analizado="HA2" data-linked-pdf-id="pdf1" data-linked-page-number="53" data-target-tab="pdf1">página 53</span> y <span class="page-link" data-hecho-analizado="HA2" data-linked-pdf-id="pdf1" data-linked-page-number="54" data-target-tab="pdf1">página 54</span></li>
+                    <li>Conclusión del análisis en los párrafos 109 al 113, en la <span class="page-link" data-hecho-analizado="HA2" data-linked-pdf-id="pdf1" data-linked-page-number="56" data-target-tab="pdf1">página 56</span></li>
+                    <li>Conclusiones y recomendaciones finales en la <span class="page-link" data-hecho-analizado="HA2" data-linked-pdf-id="pdf1" data-linked-page-number="193" data-target-tab="pdf1">página 193</span></li>
+                </ul>
+                <p class="text-sm text-gray-500 mt-2">(los números de página corresponden al INFORME FINAL DE SUPERVISION N 00056-2025- OEFA DSEM-CMIN.pdf)</p>
+
+                <h3 class="text-lg font-medium mt-4 mb-2 text-gray-600">Requerimiento que hizo OEFA el 15/08/2024</h3>
+                <p class="text-gray-700 space-y-1">El requerimiento que OEFA formuló el año pasado sobre el compromiso "g)", ahora señalado como incumplido, se encuentra en:</p>
+                <ul class="list-disc list-inside text-gray-700 space-y-1">
+                    <li>Sección 7. Requerimiento de Información, Ítem Nro. 2, en la <span class="page-link" data-hecho-analizado="HA2" data-linked-pdf-id="pdf2" data-linked-page-number="58" data-target-tab="pdf2">página 58</span> del documento: Acta de Supervision Exp 112-2024-CMINVF.pdf</li>
+                </ul>
+
+                <h3 class="text-lg font-medium mt-4 mb-2 text-gray-600">Compromiso según la MEIA</h3>
+                <p class="text-gray-700 space-y-1">El compromiso de la MEIA, correspondiente al ítem "g)" numerado por OEFA, se encuentra en:</p>
+                <ul class="list-disc list-inside text-gray-700 space-y-1">
+                    <li>Sección 4.11. Propuesta de mecanismos de Participación Ciudadana durante la ejecución de la MEIA, 4.11.4. Monitoreo Ambiental Participativo, en las <span class="page-link" data-hecho-analizado="HA2" data-linked-pdf-id="pdf3" data-linked-page-number="4" data-target-tab="pdf3">página 4</span>, <span class="page-link" data-hecho-analizado="HA2" data-linked-pdf-id="pdf3" data-linked-page-number="5" data-target-tab="pdf3">página 5</span>, <span class="page-link" data-hecho-analizado="HA2" data-linked-pdf-id="pdf3" data-linked-page-number="6" data-target-tab="pdf3">página 6</span> y <span class="page-link" data-hecho-analizado="HA2" data-linked-pdf-id="pdf3" data-linked-page-number="7" data-target-tab="pdf3">página 7</span> del documento: ΜΕΙΑ - 4.11. Participacion ciudadana durante ejecucion MEIA.pdf</li>
+                </ul>
+            </div>
+
+            <div class="mb-8">
+                <h2 class="text-xl font-semibold mb-3 text-gray-700">Hecho Analizado N.º 10: Subprograma de Educación del Programa de Desarrollo Económico Local</h2>
+                <h3 class="text-lg font-medium mb-2 text-gray-600">Compromisos evaluados</h3>
+                <ul class="list-disc list-inside text-gray-700 space-y-1">
+                    <li>a) Brindar soporte al planeamiento y monitoreo de instrumentos de gestión de las Instituciones Educativas del AIDS con una frecuencia anual.</li>
+                    <li>b) Brindar soporte a las iniciativas de capacitación a quince (15) docentes de las Instituciones Educativas del AIDS con una frecuencia anual.</li>
+                    <li>c) Realizar cuatro (4) programas de reforzamiento académico de la población estudiantil del AIDS previa coordinación con el sector educación con una frecuencia anual.</li>
+                    <li>d) Entregar materiales educativos a diez (10) instituciones educativas del AIDS con una frecuencia anual.</li>
+                    <li>e) Entrega de material educativo a los alumnos de inicial y primaria de diez (10) Instituciones Educativas del AIDS con una frecuencia anual.</li>
+                    <li>f) Brindar soporte a actividades de educación ambiental de las IIEE del AIDS con una frecuencia anual.</li>
+                    <li>g) Realizar una (1) feria de orientación vocacional para los alumnos del 5to año de educación secundaria de las Instituciones Educativas del AIDS con una frecuencia anual.</li>
+                    <li>h) Brindar soporte a los eventos académicos y culturales de dos (2) Instituciones Educativas del AIDS con una frecuencia anual.</li>
+                    <li>i) Brindar soporte a las iniciativas de una (1) APAFAs del AIDS en pro de la mejora académica de sus hijos con una frecuencia anual.</li>
+                    <li>j) Brindar soporte a las iniciativas de capacitación y/o asesoría técnica a cinco (5) Instituciones Educativas AIDS, en la formulación de proyectos de inversión pública u otros documentos de gestión para la mejora de la calidad educativa con una frecuencia anual.</li>
+                </ul>
+                <h3 class="text-lg font-medium mt-4 mb-2 text-red-600">Compromisos incumplidos:</h3>
+                <p class="incumplimiento-highlight">Según OEFA los ítems "e), i) y j)" se han incumplido para el AID, Morococha-Yauli en conjunto.</p>
+                <h3 class="text-lg font-medium mt-4 mb-2 text-gray-600">Análisis de OEFA</h3>
+                <ul class="list-disc list-inside text-gray-700 space-y-1">
+                    <li>Análisis del ítem e) en las <span class="page-link" data-hecho-analizado="HA10" data-linked-pdf-id="pdf1" data-linked-page-number="147" data-target-tab="pdf1">página 147</span>, <span class="page-link" data-hecho-analizado="HA10" data-linked-pdf-id="pdf1" data-linked-page-number="148" data-target-tab="pdf1">página 148</span> y <span class="page-link" data-hecho-analizado="HA10" data-linked-pdf-id="pdf1" data-linked-page-number="149" data-target-tab="pdf1">página 149</span></li>
+                    <li>Análisis del ítem i) en la <span class="page-link" data-hecho-analizado="HA10" data-linked-pdf-id="pdf1" data-linked-page-number="152" data-target-tab="pdf1">página 152</span> y <span class="page-link" data-hecho-analizado="HA10" data-linked-pdf-id="pdf1" data-linked-page-number="153" data-target-tab="pdf1">página 153</span></li>
+                    <li>Análisis del ítem j) en la <span class="page-link" data-hecho-analizado="HA10" data-linked-pdf-id="pdf1" data-linked-page-number="154" data-target-tab="pdf1">página 154</span> y <span class="page-link" data-hecho-analizado="HA10" data-linked-pdf-id="pdf1" data-linked-page-number="155" data-target-tab="pdf1">página 155</span></li>
+                    <li>Conclusión del análisis en los párrafos 282 al 285, en la <span class="page-link" data-hecho-analizado="HA10" data-linked-pdf-id="pdf1" data-linked-page-number="156" data-target-tab="pdf1">página 156</span> y <span class="page-link" data-hecho-analizado="HA10" data-linked-pdf-id="pdf1" data-linked-page-number="157" data-target-tab="pdf1">página 157</span></li>
+                    <li>Conclusiones y recomendaciones finales en la <span class="page-link" data-hecho-analizado="HA10" data-linked-pdf-id="pdf1" data-linked-page-number="198" data-target-tab="pdf1">página 198</span></li>
+                </ul>
+                <p class="text-sm text-gray-500 mt-2">(los números de página corresponden al INFORME FINAL DE SUPERVISION N 00056-2025- OEFA DSEM-CMIN.pdf)</p>
+
+                <h3 class="text-lg font-medium mt-4 mb-2 text-gray-600">Requerimiento que hizo OEFA el 15/08/2024</h3>
+                <p class="text-gray-700 space-y-1">El requerimiento que OEFA formuló el año pasado sobre los compromisos "e), i), y j)", ahora señalado como incumplidos, se encuentra en:</p>
+                <ul class="list-disc list-inside text-gray-700 space-y-1">
+                    <li>Sección 7. Requerimiento de Información, Ítem Nro. 10, en la <span class="page-link" data-hecho-analizado="HA10" data-linked-pdf-id="pdf2" data-linked-page-number="61" data-target-tab="pdf2">página 61</span> del documento: Acta de Supervision Exp 112-2024-CMINVF.pdf</li>
+                </ul>
+
+                <h3 class="text-lg font-medium mt-4 mb-2 text-gray-600">Compromiso según la MEIA</h3>
+                <p class="text-gray-700 space-y-1">Los compromisos de la MEIA, correspondientes a los ítems "e), i) y j)" numerados por OEFA, se encuentra en:</p>
+                <ul class="list-disc list-inside text-gray-700 space-y-1">
+                    <li>Sección 6.6. Plan de gestión social, 6.6.3. Plan de desarrollo comunitario, 6.6.3.2. Programa de desarrollo económico local, 6.6.3.2.3. Subprograma de Educación, Cuadro 6-59, en la <span class="page-link" data-hecho-analizado="HA10" data-linked-pdf-id="pdf4" data-linked-page-number="40" data-target-tab="pdf4">página 40</span> y <span class="page-link" data-hecho-analizado="HA10" data-linked-pdf-id="pdf4" data-linked-page-number="41" data-target-tab="pdf4">página 41</span> del documento: MEIA - 6.6. Plan de Gestion Social.pdf</li>
+                </ul>
+            </div>
+
+            <div class="mb-8">
+                <h2 class="text-xl font-semibold mb-3 text-gray-700">Hecho Analizado N.º 13: Oficinas de Información Permanente (OIP)</h2>
+                <h3 class="text-lg font-medium mb-2 text-gray-600">Compromisos evaluados</h3>
+                <ul class="list-disc list-inside text-gray-700 space-y-1">
+                    <li>a. Registrar la atención al público de las Oficinas de Información Permanente (OIP) de Huancayo, Morococha y Yauli de manera permanente.</li>
+                    <li>b. Registrar en fotografías las atenciones en las Oficinas de Información Permanente (OIP) de Huancayo, Morococha y Yauli.</li>
+                </ul>
+                <h3 class="text-lg font-medium mt-4 mb-2 text-red-600">Compromisos incumplidos:</h3>
+                <p class="incumplimiento-highlight">Según OEFA los ítems a) y b) se han incumplido para el ámbito de Huancayo.</p>
+                <h3 class="text-lg font-medium mt-4 mb-2 text-gray-600">Análisis de OEFA</h3>
+                <ul class="list-disc list-inside text-gray-700 space-y-1">
+                    <li>Análisis para el ítem a) en las <span class="page-link" data-hecho-analizado="HA13" data-linked-pdf-id="pdf1" data-linked-page-number="181" data-target-tab="pdf1">página 181</span>, <span class="page-link" data-hecho-analizado="HA13" data-linked-pdf-id="pdf1" data-linked-page-number="182" data-target-tab="pdf1">página 182</span> y <span class="page-link" data-hecho-analizado="HA13" data-linked-pdf-id="pdf1" data-linked-page-number="183" data-target-tab="pdf1">página 183</span></li>
+                    <li>Análisis para el ítem b) en la <span class="page-link" data-hecho-analizado="HA13" data-linked-pdf-id="pdf1" data-linked-page-number="183" data-target-tab="pdf1">página 183</span></li>
+                    <li>Conclusión del análisis en los párrafos 345 al 348, en la <span class="page-link" data-hecho-analizado="HA13" data-linked-pdf-id="pdf1" data-linked-page-number="184" data-target-tab="pdf1">página 184</span></li>
+                    <li>Conclusiones y recomendaciones finales en la <span class="page-link" data-hecho-analizado="HA13" data-linked-pdf-id="pdf1" data-linked-page-number="199" data-target-tab="pdf1">página 199</span></li>
+                </ul>
+                <p class="text-sm text-gray-500 mt-2">(los números de página corresponden al INFORME FINAL DE SUPERVISION N 00056-2025- OEFA DSEM-CMIN.pdf)</p>
+
+                <h3 class="text-lg font-medium mt-4 mb-2 text-gray-600">Requerimiento que hizo OEFA el 15/08/2024</h3>
+                <p class="text-gray-700 space-y-1">El requerimiento que OEFA formuló el año pasado sobre los compromisos "a) y b)", ahora señalado como incumplidos, se encuentra en:</p>
+                <ul class="list-disc list-inside text-gray-700 space-y-1">
+                    <li>Sección 7. Requerimiento de Información, Ítem Nro. 13, en la <span class="page-link" data-hecho-analizado="HA13" data-linked-pdf-id="pdf2" data-linked-page-number="62" data-target-tab="pdf2">página 62</span> del documento: Acta de Supervision Exp 112-2024-CMINVF.pdf</li>
+                </ul>
+
+                <h3 class="text-lg font-medium mt-4 mb-2 text-gray-600">Compromiso según la MEIA</h3>
+                <p class="text-gray-700 space-y-1">El compromiso de la MEIA, correspondiente a los ítems "a) y b)" numerados por OEFA, se encuentra en:</p>
+                <ul class="list-disc list-inside text-gray-700 space-y-1">
+                    <li>Sección 4.11. Propuesta de mecanismos de Participación Ciudadana durante la ejecución de la MEIA, 4.11.3. Oficinas de Información Permanente (OIP), en las <span class="page-link" data-hecho-analizado="HA13" data-linked-pdf-id="pdf3" data-linked-page-number="2" data-target-tab="pdf3">página 2</span>, <span class="page-link" data-hecho-analizado="HA13" data-linked-pdf-id="pdf3" data-linked-page-number="3" data-target-tab="pdf3">página 3</span> y <span class="page-link" data-hecho-analizado="HA13" data-linked-pdf-id="pdf3" data-linked-page-number="4" data-target-tab="pdf3">página 4</span> del documento: ΜΕΙΑ - 4.11. Participacion ciudadana durante ejecucion MEIA.pdf</li>
+                </ul>
+            </div>
+
+            <div class="mb-8">
+                <h2 class="text-xl font-semibold mb-3 text-gray-700">Hecho Analizado N.º 14: Visitas Guiadas al Proyecto</h2>
+                <h3 class="text-lg font-medium mb-2 text-gray-600">Compromisos evaluados</h3>
+                <ul class="list-disc list-inside text-gray-700 space-y-1">
+                    <li>a) Realizar Visitas Guiadas al Proyecto en su área de influencia directa e indirecta y documentar la ejecución de las mismas; con una frecuencia anual.</li>
+                </ul>
+                <h3 class="text-lg font-medium mt-4 mb-2 text-red-600">Compromisos incumplidos:</h3>
+                <p class="incumplimiento-highlight">Según OEFA el ítem a) se ha incumplido por no presentar los medios de verificación señalados en la MEIA.</p>
+                <h3 class="text-lg font-medium mt-4 mb-2 text-gray-600">Análisis de OEFA</h3>
+                <ul class="list-disc list-inside text-gray-700 space-y-1">
+                    <li>Análisis para el ítem a) en la <span class="page-link" data-hecho-analizado="HA14" data-linked-pdf-id="pdf1" data-linked-page-number="189" data-target-tab="pdf1">página 189</span></li>
+                    <li>Conclusión del análisis en los párrafos 364 al 368, en la <span class="page-link" data-hecho-analizado="HA14" data-linked-pdf-id="pdf1" data-linked-page-number="190" data-target-tab="pdf1">página 190</span></li>
+                    <li>Conclusiones y recomendaciones finales en la <span class="page-link" data-hecho-analizado="HA14" data-linked-pdf-id="pdf1" data-linked-page-number="200" data-target-tab="pdf1">página 200</span></li>
+                </ul>
+                <p class="text-sm text-gray-500 mt-2">(los números de página corresponden al INFORME FINAL DE SUPERVISION N 00056-2025- OEFA DSEM-CMIN.pdf)</p>
+
+                <h3 class="text-lg font-medium mt-4 mb-2 text-gray-600">Requerimiento que hizo OEFA el 15/08/2024</h3>
+                <p class="text-gray-700 space-y-1">El requerimiento que OEFA formuló el año pasado sobre el compromiso "a)", ahora señalado como incumplido, se encuentra en:</p>
+                <ul class="list-disc list-inside text-gray-700 space-y-1">
+                    <li>Sección 7. Requerimiento de Información, Ítem Nro. 14, en la <span class="page-link" data-hecho-analizado="HA14" data-linked-pdf-id="pdf2" data-linked-page-number="62" data-target-tab="pdf2">página 62</span> y <span class="page-link" data-hecho-analizado="HA14" data-linked-pdf-id="pdf2" data-linked-page-number="63" data-target-tab="pdf2">página 63</span> del documento: Acta de Supervision Exp 112-2024-CMINVF.pdf</li>
+                </ul>
+
+                <h3 class="text-lg font-medium mt-4 mb-2 text-gray-600">Compromiso según la MEIA</h3>
+                <p class="text-gray-700 space-y-1">El compromiso de la MEIA, correspondiente al ítem "a)" numerado por OEFA, se encuentra en:</p>
+                <ul class="list-disc list-inside text-gray-700 space-y-1">
+                    <li>Sección 4.11. Propuesta de mecanismos de Participación Ciudadana durante la ejecución de la MEIA, 4.11.5. Visitas guiadas al proyecto, en las <span class="page-link" data-hecho-analizado="HA14" data-linked-pdf-id="pdf3" data-linked-page-number="7" data-target-tab="pdf3">página 7</span>, <span class="page-link" data-hecho-analizado="HA14" data-linked-pdf-id="pdf3" data-linked-page-number="8" data-target-tab="pdf3">página 8</span> y <span class="page-link" data-hecho-analizado="HA14" data-linked-pdf-id="pdf3" data-linked-page-number="9" data-target-tab="pdf3">página 9</span> del documento: ΜΕΙΑ - 4.11. Participacion ciudadana durante ejecucion MEIA.pdf</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="pdf-viewer-container">
+            <div class="tabs-container">
+                <button class="tab-button" data-pdf-id="pdf1">Informe Final de Supervisión</button>
+                <button class="tab-button" data-pdf-id="pdf2">Acta de Supervisión</button>
+                <button class="tab-button" data-pdf-id="pdf3">MEIA - Participación Ciudadana</button>
+                <button class="tab-button" data-pdf-id="pdf4">MEIA - Plan de Gestión Social</button>
+            </div>
+
+            <div id="pdfViewer1Wrapper" class="pdf-iframe-wrapper active">
+                <iframe id="pdfViewer1" class="pdf-iframe" src="INFORME FINAL DE SUPERVISION N 00056-2025-OEFA DSEM-CMIN.pdf#page=1&zoom=80"></iframe>
+            </div>
+            <div id="pdfViewer2Wrapper" class="pdf-iframe-wrapper">
+                <iframe id="pdfViewer2" class="pdf-iframe" src="Acta de Supervision Exp 112-2024-CMINVF.pdf#page=1&zoom=80"></iframe>
+            </div>
+            <div id="pdfViewer3Wrapper" class="pdf-iframe-wrapper">
+                <iframe id="pdfViewer3" class="pdf-iframe" src="MEIA - 4.11. Participacion ciudadana durante ejecucion MEIA.pdf#page=1&zoom=80"></iframe>
+            </div>
+            <div id="pdfViewer4Wrapper" class="pdf-iframe-wrapper">
+                <iframe id="pdfViewer4" class="pdf-iframe" src="MEIA - 6.6. Plan de Gestion Social.pdf#page=1&zoom=80"></iframe>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const allPageLinks = document.querySelectorAll('.page-link'); 
+
+            const pdfConfig = {
+                'pdf1': { 
+                    fileName: "INFORME FINAL DE SUPERVISION N 00056-2025-OEFA DSEM-CMIN.pdf",
+                    displayName: "Informe Final de Supervisión",
+                    initialPage: 1,
+                    zoom: 80,
+                    viewerElementId: "pdfViewer1"
+                },
+                'pdf2': { 
+                    fileName: "Acta de Supervision Exp 112-2024-CMINVF.pdf",
+                    displayName: "Acta de Supervisión",
+                    initialPage: 1,
+                    zoom: 80,
+                    viewerElementId: "pdfViewer2"
+                },
+                'pdf3': { 
+                    fileName: "MEIA - 4.11. Participacion ciudadana durante ejecucion MEIA.pdf",
+                    displayName: "MEIA - Participación Ciudadana",
+                    initialPage: 1,
+                    zoom: 80,
+                    viewerElementId: "pdfViewer3" 
+                },
+                'pdf4': { 
+                    fileName: "MEIA - 6.6. Plan de Gestion Social.pdf",
+                    displayName: "MEIA - Plan de Gestión Social",
+                    initialPage: 1,
+                    zoom: 80,
+                    viewerElementId: "pdfViewer4" 
+                }
+            };
+
+            // Mapeo de Hechos Analizados a sus rangos de páginas consolidados
+            const pageMappings = {
+                'HA2': { // Hecho Analizado 2
+                    'general': { 
+                        pdf1: [53, 54, 56, 193],
+                        pdf2: [58],
+                        pdf3: [4, 5, 6, 7],
+                        pdf4: [1] // Default para vacío
+                    }
+                },
+                'HA10': { // Hecho Analizado 10 (Consolidado)
+                    'general': { 
+                        pdf1: [147, 148, 149, 156, 157, 198],
+                        pdf2: [61],
+                        pdf3: [1], // Default para vacío
+                        pdf4: [40, 41] 
+                    }
+                },
+                'HA13': { // Hecho Analizado 13
+                    'general': { 
+                        pdf1: [181, 182, 183, 184, 199],
+                        pdf2: [62],
+                        pdf3: [2, 3, 4], 
+                        pdf4: [1] // Default para vacío
+                    }
+                },
+                'HA14': { // Hecho Analizado 14
+                    'general': { 
+                        pdf1: [189, 190, 200],
+                        pdf2: [62, 63],
+                        pdf3: [7, 8, 9], 
+                        pdf4: [1] // Default para vacío
+                    }
+                }
+            };
+
+            // Guarda el estado actual (página y zoom) de cada PDF lógico.
+            const pdfStates = {};
+            for (const id in pdfConfig) {
+                const config = pdfConfig[id];
+                pdfStates[id] = {
+                    page: config.initialPage,
+                    zoom: config.zoom,
+                    viewer: document.getElementById(config.viewerElementId), 
+                    wrapper: document.getElementById(config.viewerElementId + 'Wrapper'),
+                    fileName: config.fileName 
+                };
+            }
+            
+            // Función para cargar un PDF específico (identificado por su ID lógico)
+            const loadSpecificPdfContent = (logicalPdfId, pageToLoad) => {
+                const config = pdfConfig[logicalPdfId]; 
+                const viewerState = pdfStates[logicalPdfId]; 
+                const targetViewer = viewerState.viewer; 
+
+                const fileNameToLoad = config.fileName;
+                const newSrc = `${fileNameToLoad}#page=${pageToLoad}&zoom=${config.zoom}`;
+
+                if (targetViewer.src !== newSrc) {
+                    targetViewer.src = 'about:blank'; 
+                    setTimeout(() => {
+                        targetViewer.src = newSrc;
+                    }, 50);
+                }
+                viewerState.page = pageToLoad; // Actualiza la página guardada para este PDF lógico
+            };
+
+            // Función principal para activar una pestaña y navegar los PDFs
+            const activateTabAndNavigate = (tabIdToActivate, pagesToNavigate = {}) => {
+                // 1. Actualizar el estado visual de los botones de las pestañas
+                tabButtons.forEach(button => {
+                    if (button.dataset.pdfId === tabIdToActivate) {
+                        button.classList.add('active');
+                    } else {
+                        button.classList.remove('active');
+                    }
+                });
+
+                // 2. Gestionar la visibilidad de los iframes (wrappers)
+                document.querySelectorAll('.pdf-iframe-wrapper').forEach(wrapper => {
+                    wrapper.classList.remove('active');
+                });
+                const actualViewerIdToShow = pdfConfig[tabIdToActivate]?.viewerElementId;
+                if (actualViewerIdToShow) {
+                    document.getElementById(actualViewerIdToShow + 'Wrapper').classList.add('active');
+                }
+
+                // 3. Navegar todos los PDFs a sus páginas correspondientes (visibles y ocultos)
+                for (const logicalId in pdfConfig) { 
+                    let pageToLoad = pagesToNavigate[logicalId]; // Página solicitada por el enlace
+
+                    // Si no se proporcionó una página específica desde el enlace, usa la última página conocida.
+                    if (!pageToLoad) {
+                        pageToLoad = pdfStates[logicalId].page;
+                    }
+                    
+                    loadSpecificPdfContent(logicalId, pageToLoad);
+                }
+            };
+
+
+            // Manejar clics en los botones de las pestañas
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const clickedPdfId = button.dataset.pdfId;
+                    activateTabAndNavigate(clickedPdfId, {}); 
+                });
+            });
+
+            // Manejar clics en los enlaces de página (panel izquierdo)
+            allPageLinks.forEach(link => {
+                link.addEventListener('click', (event) => {
+                    const hechoAnalizadoKey = event.target.dataset.hechoAnalizado;
+                    const linkedPdfId = event.target.dataset.linkedPdfId; 
+                    const linkedPageNumber = parseInt(event.target.dataset.linkedPageNumber); 
+                    const targetTabId = event.target.dataset.targetTab; 
+
+                    const baseMapping = pageMappings[hechoAnalizadoKey]?.general;
+                    if (!baseMapping) return; 
+
+                    const pagesToNavigate = {};
+
+                    // Iterar sobre todos los posibles PDFs (pdf1, pdf2, pdf3, pdf4)
+                    for (const pdfId in pdfConfig) { 
+                        let pageForThisPdf = 1; 
+
+                        if (pdfId === linkedPdfId) {
+                            pageForThisPdf = linkedPageNumber;
+                        } else if (baseMapping[pdfId] && baseMapping[pdfId].length > 0) {
+                            pageForThisPdf = baseMapping[pdfId][0]; 
+                        }
+                        pagesToNavigate[pdfId] = pageForThisPdf;
+                    }
+                    
+                    activateTabAndNavigate(targetTabId, pagesToNavigate);
+                });
+            });
+
+            // Cargar y mostrar la primera pestaña (pdf1) por defecto al inicio de la página.
+            activateTabAndNavigate('pdf1');
+        });
+    </script>
+</body>
+</html>
