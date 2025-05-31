@@ -10,7 +10,8 @@
         body { margin: 0; padding: 0; font-family: sans-serif; height: 100vh; overflow: hidden; }
         .main-grid {
             display: grid;
-            grid-template-columns: 1.5fr 1fr; /* Columna izquierda para resumen (más ancha), columna derecha (PDF) */
+            /* Columna izquierda 65% y columna derecha (PDF) 35% */
+            grid-template-columns: 65fr 35fr; 
             height: 100%;
         }
         /* Panel Izquierdo para el resumen */
@@ -237,10 +238,10 @@
 
         <div class="pdf-viewer-container">
             <div class="tabs-container">
-                <button class="tab-button" data-pdf-id="pdf1">Informe Final de Supervisión</button>
-                <button class="tab-button" data-pdf-id="pdf2">Acta de Supervisión</button>
-                <button class="tab-button" data-pdf-id="pdf3">MEIA - Participación Ciudadana</button>
-                <button class="tab-button" data-pdf-id="pdf4">MEIA - Plan de Gestión Social</button>
+                <button class="tab-button" data-pdf-id="pdf1">Inf. Final Sup.</button>
+                <button class="tab-button" data-pdf-id="pdf2">Acta Sup.</button>
+                <button class="tab-button" data-pdf-id="pdf3">MEIA Part. Ciu.</button>
+                <button class="tab-button" data-pdf-id="pdf4">MEIA Plan Gest.</button>
             </div>
 
             <div id="pdfViewer1Wrapper" class="pdf-iframe-wrapper active">
@@ -301,7 +302,7 @@
                         pdf1: [53, 54, 56, 193],
                         pdf2: [58],
                         pdf3: [4, 5, 6, 7],
-                        pdf4: [1] // Default para vacío
+                        pdf4: [1] 
                     }
                 },
                 'HA10': { // Hecho Analizado 10 (Consolidado)
@@ -346,7 +347,7 @@
             // Función para cargar un PDF específico (identificado por su ID lógico)
             const loadSpecificPdfContent = (logicalPdfId, pageToLoad) => {
                 const config = pdfConfig[logicalPdfId]; 
-                const viewerState = pdfStates[logicalPdfId]; 
+                const viewerState = pdfStates[logicalId]; 
                 const targetViewer = viewerState.viewer; 
 
                 const fileNameToLoad = config.fileName;
